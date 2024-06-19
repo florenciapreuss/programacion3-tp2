@@ -1,6 +1,5 @@
 import { Text, View } from 'react-native'
 import React, { Component } from 'react'
-import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import FriendProfile from '../screens/FriendProfile'
 import Home from '../screens/Home'
@@ -32,3 +31,4 @@ export default class StackHome extends Component {
     )
   }
 }
+

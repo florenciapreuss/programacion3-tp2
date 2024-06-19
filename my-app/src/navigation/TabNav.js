@@ -15,7 +15,7 @@ export default class TabNav extends Component {
   render() {
     return (
       <Tab.Navigator>
-        <Stack.Screen
+        <Tab.Screen
             options={{
                 headerShown:false
             }} 
@@ -46,3 +46,4 @@ export default class TabNav extends Component {
     )
   }
 }
+
