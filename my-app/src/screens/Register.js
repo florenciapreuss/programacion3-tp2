@@ -9,6 +9,8 @@ class Register extends Component {
             name:'',
             password:'',
             email:'',
+            bio: '',
+            profilePic: '',
             error: ''
         }
     }
@@ -70,6 +72,20 @@ class Register extends Component {
                     onChangeText={(text) => this.setState({email: text, error: ''})}
                     value={this.state.email}
                     placeholder='Email'
+                    keyboardType='default'
+                    style={styles.input}
+                />
+                <TextInput
+                    onChangeText={(text) => this.setState({bio: text, error: ''})}
+                    value={this.state.bio}
+                    placeholder='Type your bio description'
+                    keyboardType='default'
+                    style={styles.input}
+                />
+                <TextInput
+                    onChangeText={(text) => this.setState({profilePic: text, error: ''})}
+                    value={this.state.profilePic}
+                    placeholder='Paste the url to your profile picture'
                     keyboardType='default'
                     style={styles.input}
                 />
