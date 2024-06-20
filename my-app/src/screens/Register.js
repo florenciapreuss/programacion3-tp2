@@ -41,9 +41,22 @@ class Register extends Component {
 
         auth.createUserWithEmailAndPassword(email, password)
         .then((user) => {
-            if(user){
-                console.log('registered user')
-            }
+            db.collection('users').add({
+                email: this.state.email,
+                name: this.state.name,
+                bio: this.state.bio,
+                profilePic: this.state.profilePic,
+                createdAt: Date.now()
+            })
+            .then(()=> {
+                this.setState({
+                    name:'',
+                    email:'',
+                    password:'',
+                    loader: false
+                });
+                this.props.navigation.navigate('login')
+            })
         })
         .catch((err) =>{ 
             if(err.code === "auth/email-already-in-use"){
