@@ -35,7 +35,7 @@ class Home extends Component {
     render() {
         return (
             <View>
-                <Text style={styles.title}>Feed</Text>
+                <Text style={styles.title}>PicShot</Text>
                 <FlatList
                 
                     style={styles.flatList}
