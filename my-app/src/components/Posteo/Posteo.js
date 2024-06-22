@@ -1,44 +1,36 @@
 // Mostrar la tarjeta del posteo
-import react, { Component } from "react";
+import React, { Component } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
 class Posteo extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          
-            
-        }
-    }
-    
     render() {
-        console.log(this.props);
-    
+        const { owner, imageUrl, descripcion } = this.props.post.data;
+
         return (
-          <View style={styles.postContainer}>
-            <View >
-                <Text>{this.props.post.data.owner}</Text>
-              <Image style={styles.imagen} source={{ uri: this.props.post.data.imageUrl }}
-                
-              />
+            <View style={styles.postContainer}>
+                {/* Encabezado del Post */}
+                <View style={styles.header}>
+                    {/* Avatar del propietario (podría ser una imagen circular) */}
+                    <Image
+                        style={styles.avatar}
+                        source={{ uri: 'https://placekitten.com/200/200' }} // Ejemplo de imagen de avatar
+                    />
+                    {/* Nombre de usuario */}
+                    <Text style={styles.ownerName}>{owner}</Text>
+                </View>
+
+                {/* Imagen del Post */}
+                <Image
+                    style={styles.image}
+                    source={{ uri: imageUrl }}
+                />
+
+                {/* Descripción del Post */}
+                <Text style={styles.description}>{descripcion}</Text>
             </View>
-            <Text > {this.props.post.data.descripcion}</Text>
-    
-            
-    
-           
-          </View>
         );
     }
 }
-
-export default Posteo;
-
-
-
-
-
-
 
 const styles = StyleSheet.create({
     postContainer: {
@@ -53,14 +45,31 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 3,
     },
-    imagen: {
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+    },
+    avatar: {
+        width: 40,
+        height: 40,
+        borderRadius: 20, // Hacer la imagen circular
+        marginRight: 10,
+    },
+    ownerName: {
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+    image: {
         width: '100%',
         aspectRatio: 1, // Mantener la relación de aspecto de la imagen
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
     },
-    postDescripcion: {
+    description: {
         padding: 10,
-        fontSize: 16,
+        fontSize: 14,
     },
 });
+
+export default Posteo;
