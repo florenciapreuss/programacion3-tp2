@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native'
 import { auth } from '../firebase/config'
 
+
 class Login extends Component {
     constructor(props){
         super(props)

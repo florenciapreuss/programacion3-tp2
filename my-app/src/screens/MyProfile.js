@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image } from 'react-native';
 import { auth, db } from '../firebase/config';
 import { getAuth, deleteUser } from "firebase/auth";
+<<<<<<< HEAD
 import Posteo from '../components/Posteo';
+=======
+/* import Posteo from '../../components/Posteo'; */
+>>>>>>> 0e7d98a16c2c0edf1af3c97aa97990dc47736a3a
 
 class MyProfile extends Component {
     constructor() {

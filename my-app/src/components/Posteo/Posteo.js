@@ -17,7 +17,8 @@ class Posteo extends Component {
         return (
           <View style={styles.postContainer}>
             <View >
-              <Image style={styles.imagen} source={{ uri: this.props.post.data.imagen }}
+                <Text>{this.props.post.data.owner}</Text>
+              <Image style={styles.imagen} source={{ uri: this.props.post.data.imageUrl }}
                 
               />
             </View>
