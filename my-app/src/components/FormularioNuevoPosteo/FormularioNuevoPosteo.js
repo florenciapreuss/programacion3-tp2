@@ -40,7 +40,7 @@ class FormularioNuevoPosteo extends Component {
                     EN CASO DE TENER QUE INCORPORAR CAMARA DE FOTOS HACERLO ACÁ. 
                     TIENE QUE SER UN COMPONENTE CÁMARA QUE SAQUE LA FOTO Y OTRO QUE LA MUESTRE
                 */}
-               {/*  <TextInput
+                {/* <TextInput
                     style={styles.input}
                     placeholder="URL de la imagen"
                     onChangeText={(value) => this.handleInputChange("imagen", value)}
