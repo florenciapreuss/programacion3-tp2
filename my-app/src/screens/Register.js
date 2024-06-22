@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native'
-import { auth } from '../firebase/config'
+import { auth, db } from '../firebase/config'
 
 class Register extends Component {
     constructor(props){
@@ -15,9 +15,7 @@ class Register extends Component {
         }
     }
 
-    componentDidMount(){
-        console.log(this.props)
-    }
+ 
 
     onSubmit(name, email, password){
         if(
@@ -38,12 +36,14 @@ class Register extends Component {
             this.setState({error: 'Password has to be at least 6 characters long'})
             return false
         }
+        this.setState({ loading: true, error: '' });
 
         auth.createUserWithEmailAndPassword(email, password)
-        .then((user) => {
+
+        .then(user => {
             db.collection('users').add({
-                email: this.state.email,
-                name: this.state.name,
+                email: email,
+                name: name,
                 bio: this.state.bio,
                 profilePic: this.state.profilePic,
                 createdAt: Date.now()
@@ -53,18 +53,15 @@ class Register extends Component {
                     name:'',
                     email:'',
                     password:'',
-                    loader: false
+                    loading: false
                 });
                 this.props.navigation.navigate('login')
             })
         })
-        .catch((err) =>{ 
-            if(err.code === "auth/email-already-in-use"){
-                this.setState({error:'Email belongs to another user'})
-            }
-        })
+        .catch(err => this.setState({ error: err.message, loading: false }));
+    };
+   
 
-    }
 
     redirect(){
         this.props.navigation.navigate('login')
