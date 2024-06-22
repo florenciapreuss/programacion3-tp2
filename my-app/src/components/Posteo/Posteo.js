@@ -1,8 +1,15 @@
 // Mostrar la tarjeta del posteo
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { auth, db } from '../../firebase/config'
 
 class Posteo extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+          estaMiLike: false
+        }
+      }
     render() {
         const { owner, imageUrl, descripcion } = this.props.post.data;
 
@@ -16,7 +23,9 @@ class Posteo extends Component {
                         source={{ uri: 'https://placekitten.com/200/200' }} // Ejemplo de imagen de avatar
                     />
                     {/* Nombre de usuario */}
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("friend-profile", { email: owner })}>
                     <Text style={styles.ownerName}>{owner}</Text>
+                    </TouchableOpacity>
                 </View>
 
                 {/* Imagen del Post */}

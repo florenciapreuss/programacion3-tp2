@@ -12,8 +12,9 @@ class FriendProfile extends Component {
     }
 
     componentDidMount() {
-        const email = this.props.route.params.email;  // asegurarme que coincida con lo que pongo en el navigate de home
-
+        const email = this.props.route.params.email;
+        console.log(email);
+    
         db.collection('users').where('email', '==', email).onSnapshot(
             docs => {
                 let userInfo = null;
@@ -26,10 +27,13 @@ class FriendProfile extends Component {
                 this.setState({
                     user: userInfo,
                 });
+            },
+            error => {
+                console.error("Error fetching user data: ", error);
             }
         );
-
-        db.collection('posteos').where('email', '==', email).onSnapshot( // chequiar que lo que esta entre comillas coincida 
+    
+        db.collection('posteos').where('owner', '==', email).onSnapshot(
             docs => {
                 let posts = [];
                 docs.forEach(doc => {
@@ -41,38 +45,46 @@ class FriendProfile extends Component {
                 this.setState({
                     userPosts: posts,
                 });
+            },
+            error => {
+                console.error("Error fetching posts data: ", error);
             }
         );
     }
+    
 
     render() {
         const { user, userPosts } = this.state;
-        
+    
         return (
             <View style={styles.container}>
                 {user ? (
-                    <>
+                    <View style={styles.profileContainer}>
                         <Image source={{ uri: user.data.profilePic }} style={styles.profileImage} />
-                        <Text style={styles.name}>{user.data.name}</Text>
-                        <Text style={styles.bio}>{user.data.bio}</Text>
-                        <Text style={styles.email}>{user.data.email}</Text>
-                    </>
+                        <View style={styles.profileDetails}>
+                            <Text style={styles.name}>{user.data.name}</Text>
+                            <Text style={styles.bio}>{user.data.bio}</Text>
+                            <Text style={styles.email}>{user.data.email}</Text>
+                        </View>
+                    </View>
                 ) : (
-                    <Text style={styles.loading}>Cargando...</Text>
+                    <Text style={styles.loading}>Loading...</Text>
                 )}
+                
                 <FlatList
                     data={userPosts}
                     keyExtractor={item => item.id.toString()}
                     renderItem={({ item }) => (
                         <View style={styles.postContainer}>
-                            <Image source={{ uri: item.data.imageUrl }} style={styles.postImage} /> {/* cambiar .imageUrl por como le hallamos puesto en crearpost */}
-                            <Text style={styles.postText}>{item.data.pie}</Text> {/* cambiar .pie por como le hallamos puesto en crearpost */}
+                            <Image source={{ uri: item.data.imageUrl }} style={styles.postImage} />
+                            <Text style={styles.postText}>{item.data.descripcion}</Text>
                         </View>
                     )}
                 />
             </View>
         );
     }
+    
 }
 
 const styles = StyleSheet.create({
@@ -81,30 +93,33 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#f8f8f8',
     },
+    profileContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
     profileImage: {
         width: 100,
         height: 100,
         borderRadius: 50,
-        marginBottom: 20,
-        alignSelf: 'center',
+        marginRight: 20,
+    },
+    profileDetails: {
+        flex: 1,
     },
     name: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 10,
-        textAlign: 'center',
     },
     bio: {
         fontSize: 18,
         color: '#666',
         marginBottom: 10,
-        textAlign: 'center',
     },
     email: {
         fontSize: 18,
         color: '#666',
-        marginBottom: 20,
-        textAlign: 'center',
     },
     loading: {
         fontSize: 18,
@@ -114,10 +129,22 @@ const styles = StyleSheet.create({
     postContainer: {
         marginBottom: 20,
         alignItems: 'center',
+        backgroundColor: '#fff',
+        padding: 10,
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        width: '100%',
     },
     postImage: {
-        width: 200,
-        height: 200,
+        width: '100%',
+        height: 300,
         borderRadius: 10,
         marginBottom: 10,
     },
