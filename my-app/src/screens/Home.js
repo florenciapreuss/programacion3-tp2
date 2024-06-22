@@ -35,7 +35,7 @@ class Home extends Component {
     render() {
         return (
             <View>
-                <Text style={styles.title}>Home</Text>
+                <Text style={styles.title}>Feed</Text>
                 <FlatList
                 
                     style={styles.flatList}
@@ -52,6 +52,8 @@ class Home extends Component {
         );
     }
 }
+
+
 
 
 export default Home;
