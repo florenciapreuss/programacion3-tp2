@@ -45,13 +45,13 @@ class Comments extends Component {
   }
 
   volverAlHome() {
-    this.props.navigation.navigate("home", { id: this.props.post.id });
+    this.props.navigation.navigate("home"), { id: this.props.post.id };
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Comments:</Text>
+        <Text style={styles.title}>Comments</Text>
         {
           this.state.arrayDeComments.length === 0 ? (
             <Text style={styles.noComments}>No comments yet</Text>
