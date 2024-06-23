@@ -36,6 +36,7 @@ export default class Post extends Component {
     render() {
         return (
             <View style={styles.container}>
+                
                 <TextInput
                     value={this.state.descripcion}
                     onChangeText={(text) => this.setState({ descripcion: text })}
