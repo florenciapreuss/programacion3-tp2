@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
-import { db } from '../firebase/config'; 
+import { db } from '../firebase/config';
+import Posteo from '../components/Posteo/Posteo'; 
+import { AntDesign } from '@expo/vector-icons';
 
 class FriendProfile extends Component {
     constructor(props) {
@@ -14,7 +16,7 @@ class FriendProfile extends Component {
     componentDidMount() {
         const email = this.props.route.params.email;
         console.log(email);
-    
+
         db.collection('users').where('email', '==', email).onSnapshot(
             docs => {
                 let userInfo = null;
@@ -32,7 +34,7 @@ class FriendProfile extends Component {
                 console.error("Error fetching user data: ", error);
             }
         );
-    
+
         db.collection('posteos').where('owner', '==', email).onSnapshot(
             docs => {
                 let posts = [];
@@ -51,11 +53,10 @@ class FriendProfile extends Component {
             }
         );
     }
-    
 
     render() {
         const { user, userPosts } = this.state;
-    
+
         return (
             <View style={styles.container}>
                 {user ? (
@@ -65,26 +66,26 @@ class FriendProfile extends Component {
                             <Text style={styles.name}>{user.data.name}</Text>
                             <Text style={styles.bio}>{user.data.bio}</Text>
                             <Text style={styles.email}>{user.data.email}</Text>
+                            <Text style={styles.postsCount}>Posts: {userPosts.length}</Text>
                         </View>
                     </View>
                 ) : (
                     <Text style={styles.loading}>Loading...</Text>
                 )}
-                
+
                 <FlatList
                     data={userPosts}
                     keyExtractor={item => item.id.toString()}
                     renderItem={({ item }) => (
-                        <View style={styles.postContainer}>
-                            <Image source={{ uri: item.data.imageUrl }} style={styles.postImage} />
-                            <Text style={styles.postText}>{item.data.descripcion}</Text>
-                        </View>
+                        <Posteo
+                            post={item}
+                            navigation={this.props.navigation}
+                        />
                     )}
                 />
             </View>
         );
     }
-    
 }
 
 const styles = StyleSheet.create({
@@ -126,31 +127,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#666',
     },
-    postContainer: {
-        marginBottom: 20,
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        padding: 10,
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        width: '100%',
-    },
-    postImage: {
-        width: '100%',
-        height: 300,
-        borderRadius: 10,
-        marginBottom: 10,
-    },
-    postText: {
-        fontSize: 16,
-        color: '#333',
+    postsCount: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginTop: 10,
     },
 });
 

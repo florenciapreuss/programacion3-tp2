@@ -69,8 +69,8 @@ class MyProfile extends Component {
 
     render() {
         return (
-            <View /* style={} */>
-                <Image /* style={} *//>
+            <View >
+                <Image/>
                 {
                     this.state.PostsUser.length > 0 ?
                         <FlatList
@@ -82,11 +82,11 @@ class MyProfile extends Component {
                         :
                         <Text>This user does not have any posts</Text>
                 }
-                <TouchableOpacity /* style={} */ onPress={() => this.logout()}>
-                    <Text /* style={} */>LogOut</Text>
+                <TouchableOpacity  onPress={() => this.logout()}>
+                    <Text>LogOut</Text>
                 </TouchableOpacity>
-                <TouchableOpacity /* style={} */ onPress={() => (this.borrarUsuario())(this.props.navigation.navigate("Home"))}>
-                    <Text /* style={} */>Delete this Profile</Text>
+                <TouchableOpacity onPress={() => (this.borrarUsuario())(this.props.navigation.navigate("Home"))}>
+                    <Text>Delete this Profile</Text>
                 </TouchableOpacity>
             </View>
         );
