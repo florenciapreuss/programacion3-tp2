@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { auth, db } from '../../firebase/config'
 import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import firebase from "firebase";
 
 class Posteo extends Component {
@@ -95,7 +96,7 @@ class Posteo extends Component {
                 <View /* style={} */>
                 <Text /* style={} */> {this.props.post.data.comments.length} </Text>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("comments", { id: this.props.post.id })}>
-                        <Text /* style={} */> Add Comment </Text>
+                    <FontAwesome name="comments" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
 
