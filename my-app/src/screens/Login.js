@@ -45,7 +45,7 @@ class Login extends Component {
     }
 
     redirectRegister() {
-        this.props.navigation.navigate('Register');
+        this.props.navigation.navigate('register');
     }
 
     render() {
