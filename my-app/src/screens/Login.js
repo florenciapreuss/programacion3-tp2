@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { auth } from '../firebase/config';
 
 class Login extends Component {
@@ -8,14 +8,17 @@ class Login extends Component {
         this.state = {
             password: '',
             email: '',
-            error: ''
+            error: '',
+            loading: true, 
         };
     }
 
     componentDidMount() {
         auth.onAuthStateChanged((user) => {
             if (user) {
-                console.log('logged email', auth.currentUser.email);
+                this.props.navigation.navigate('tabnav'); 
+            } else {
+                this.setState({ loading: false }); 
             }
         });
     }
@@ -32,7 +35,7 @@ class Login extends Component {
 
         auth.signInWithEmailAndPassword(email, password)
             .then(user => {
-                this.props.navigation.navigate('tabnav');
+                this.props.navigation.navigate('Main');
             })
             .catch(err => {
                 if (err.code === 'auth/internal-error') {
@@ -42,10 +45,18 @@ class Login extends Component {
     }
 
     redirectRegister() {
-        this.props.navigation.navigate('register');
+        this.props.navigation.navigate('Register');
     }
 
     render() {
+        if (this.state.loading) {
+            return (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color="#007bff" />
+                </View>
+            );
+        }
+
         const isButtonDisabled = this.state.email === '' || this.state.password === '';
 
         return (
@@ -139,7 +150,12 @@ const styles = StyleSheet.create({
         color: 'red',
         marginTop: 20,
         textAlign: 'center',
-    }
+    },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export default Login;
