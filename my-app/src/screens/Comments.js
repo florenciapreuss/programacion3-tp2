@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { FlatList, TextInput, View, TouchableOpacity, StyleSheet, Text, Image } from 'react-native';
-import { db, auth } from "../../firebase/config";
+import { db, auth } from "../firebase/config";
 import firebase from "firebase";
 
 class Comments extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      arrComments: [],
+      arrayDeComments: [],
       comentario: "",
     };
   }
@@ -19,14 +19,14 @@ class Comments extends Component {
       .onSnapshot(doc => {
         console.log('antes del setState, comments', doc.data().comments);
         this.setState({
-          arrComments: doc.data().comments ? doc.data().comments.sort((a, b) => b.createdAt - a.createdAt) : [],
+          arrayDeComments: doc.data().comments ? doc.data().comments.sort((a, b) => b.createdAt - a.createdAt) : [],
         }, () => console.log(this.state));
       });
   }
 
-  enviarComentario(comentario) {
-    const newComment = {
-      owner: auth.currentUser.email,
+  enviarComments(comentario) {
+    const nuevoComment = {
+      email: auth.currentUser.email,
       createdAt: Date.now(),
       comment: comentario,
     };
@@ -34,7 +34,7 @@ class Comments extends Component {
     db.collection("posteos")
       .doc(this.props.route.params.id)
       .update({
-        comments: firebase.firestore.FieldValue.arrayUnion(newComment),
+        comments: firebase.firestore.FieldValue.arrayUnion(nuevoComment),
       })
       .then(() => {
         this.setState({
@@ -44,50 +44,50 @@ class Comments extends Component {
       .catch(err => console.log(err));
   }
 
-  regresar() {
+  volverAlHome() {
     this.props.navigation.navigate("home"), { id: this.props.post.id };
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <Image style={styles.img} source={require('../../../assets/logo.jpg')} />
-        <Text style={styles.title}>COMENTARIOS</Text>
+      <View /* style={} */>
+        <Text /* style={} */>Comments:</Text>
         {
-          this.state.arrComments.length === 0 ? (
-            <Text style={styles.noCommentsText}>Aún no hay comentarios</Text>
+          this.state.arrayDeComments.length === 0 ? (
+            <Text /* style={} */>No comments yet</Text>
           ) : (
             <FlatList
-              data={this.state.arrComments}
+              data={this.state.arrayDeComments}
               keyExtractor={item => item.createdAt.toString()}
               renderItem={({ item }) => (
                 
-                <View style={styles.commentBox}>
+                <View /* style={} */>
                   {console.log('item', item)}
-                  <Text style={styles.comment}>{item.owner} : {item.comment}</Text>
+                  <Text /* style={} */>{item.email} : {item.comment}</Text>
                 </View>
               )}
             />
           )
         }
-        <View style={styles.inputContainer}>
+        <View /* style={} */>
           <TextInput
-            placeholder="Escribi tu comentario"
-            style={styles.input}
+            placeholder="Write your comment"
+            /* style={} */
             keyboardType='default'
-            onChangeText={text => this.setState({ comentario: text })}
+            onChangeText={string => this.setState({ comentario: string })}
             value={this.state.comentario}
           />
-          <TouchableOpacity style={styles.button} onPress={() => this.enviarComentario(this.state.comentario)}>
-            <Text style={styles.buttonText}>Enviar Comentario</Text>
+          <TouchableOpacity /* style={} */ onPress={() => this.enviarComments(this.state.comentario)}>
+            <Text /* style={} */>Send comment</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.returnButton} onPress={() => this.regresar()}>
-            <Text style={styles.returnButtonText}>Regresar</Text>
+          <TouchableOpacity /* style={}  */onPress={() => this.volverAlHome()}>
+            <Text /* style={} */>Go back to home page</Text>
           </TouchableOpacity>
         </View>
       </View>
     );
   }
 }
-export default Comments;
 
+
+export default Comments;

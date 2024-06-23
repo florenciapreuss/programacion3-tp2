@@ -31,7 +31,7 @@ class Home extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>Feed</Text>
+                <Text style={styles.title}>PicShot</Text>
                 <FlatList
                     style={styles.flatList}
                     data={this.state.posteos}
@@ -48,7 +48,6 @@ class Home extends Component {
     }
 }
 
-export default Home;
 
 const styles = StyleSheet.create({
     container: {
@@ -66,3 +65,5 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 });
+
+export default Home;
