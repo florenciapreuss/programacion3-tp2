@@ -27,7 +27,6 @@ class Comments extends Component {
   enviarComments(comentario) {
     const nuevoComment = {
       email: auth.currentUser.email,
-      name: auth.currentUser.name,
       createdAt: Date.now(),
       comment: comentario,
     };
@@ -64,7 +63,7 @@ class Comments extends Component {
                 
                 <View /* style={} */>
                   {console.log('item', item)}
-                  <Text /* style={} */>{item.name} : {item.comment}</Text>
+                  <Text /* style={} */>{item.email} : {item.comment}</Text>
                 </View>
               )}
             />
@@ -82,7 +81,7 @@ class Comments extends Component {
             <Text /* style={} */>Send comment</Text>
           </TouchableOpacity>
           <TouchableOpacity /* style={}  */onPress={() => this.volverAlHome()}>
-            <Text /* style={} */>Go back:</Text>
+            <Text /* style={} */>Go back to home page</Text>
           </TouchableOpacity>
         </View>
       </View>
