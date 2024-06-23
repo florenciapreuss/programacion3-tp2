@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image } from 'react-native';
 import { auth, db } from '../firebase/config';
 import { getAuth, deleteUser } from "firebase/auth";
-import Posteo from '../components/Posteo';
+import Posteo from '../components/Posteo/Posteo';
 
 class MyProfile extends Component {
     constructor() {
@@ -13,7 +13,7 @@ class MyProfile extends Component {
     }
 
     componentDidMount() {
-        db.collection("posts").where("userPost", "==", auth.currentUser.email)
+        db.collection("posteos").where("owner", "==", auth.currentUser.email)
             .onSnapshot((docs) => {
                 let postsDb = [];
                 docs.forEach(doc => {
@@ -41,7 +41,7 @@ class MyProfile extends Component {
 
 
     deleteThePost(idSpecificPost) {
-        db.collection("posts")
+        db.collection("posteos")
             .doc(idSpecificPost)
             .delete()
             .then((res) => console.log(res))
@@ -85,7 +85,7 @@ class MyProfile extends Component {
                 <TouchableOpacity /* style={} */ onPress={() => this.logout()}>
                     <Text /* style={} */>LogOut</Text>
                 </TouchableOpacity>
-                <TouchableOpacity /* style={} */ onPress={() => (this.borrarUsuario())(this.props.navigation.navigate("Home"))}>
+                <TouchableOpacity /* style={} */ onPress={() => (this.borrarUsuario())(this.props.navigation.navigate("home"))}>
                     <Text /* style={} */>Delete this Profile</Text>
                 </TouchableOpacity>
             </View>
