@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image } from 'react-native';
 import { auth, db } from '../firebase/config';
 import { getAuth, deleteUser } from "firebase/auth";
+<<<<<<< HEAD
 import Posteo from '../components/Posteo/Posteo'
+=======
+import Posteo from '../components/Posteo/Posteo';
+>>>>>>> 1d3721040cd9f0ac9d3133abd571e81c202f0f9b
 
 class MyProfile extends Component {
     constructor() {
@@ -69,8 +73,8 @@ class MyProfile extends Component {
 
     render() {
         return (
-            <View /* style={} */>
-                <Image /* style={} *//>
+            <View >
+                <Image/>
                 {
                     this.state.PostsUser.length > 0 ?
                         <FlatList
@@ -82,11 +86,11 @@ class MyProfile extends Component {
                         :
                         <Text>This user does not have any posts</Text>
                 }
-                <TouchableOpacity /* style={} */ onPress={() => this.logout()}>
-                    <Text /* style={} */>LogOut</Text>
+                <TouchableOpacity  onPress={() => this.logout()}>
+                    <Text>LogOut</Text>
                 </TouchableOpacity>
-                <TouchableOpacity /* style={} */ onPress={() => (this.borrarUsuario())(this.props.navigation.navigate("Home"))}>
-                    <Text /* style={} */>Delete this Profile</Text>
+                <TouchableOpacity onPress={() => (this.borrarUsuario())(this.props.navigation.navigate("Home"))}>
+                    <Text>Delete this Profile</Text>
                 </TouchableOpacity>
             </View>
         );
