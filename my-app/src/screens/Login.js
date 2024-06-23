@@ -1,69 +1,65 @@
-import React, {Component} from 'react'
-import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native'
-import { auth } from '../firebase/config'
-
+import React, { Component } from 'react';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { auth } from '../firebase/config';
 
 class Login extends Component {
-    constructor(props){
-        super(props)
+    constructor(props) {
+        super(props);
         this.state = {
-            password:'',
-            email:'',
+            password: '',
+            email: '',
             error: ''
-        }
+        };
     }
 
-    componentDidMount(){
-        auth.onAuthStateChanged((user) =>{
-            if(user){
-                console.log('logged email',auth.currentUser.email)
+    componentDidMount() {
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('logged email', auth.currentUser.email);
             }
-        })
+        });
     }
 
-    onSubmit(email, password){
-        if(
-            email === null || email === '' || !email.includes('@')
-        ){
-            this.setState({error: 'Invalid email'})
-            return false
+    onSubmit(email, password) {
+        if (email === null || email === '' || !email.includes('@')) {
+            this.setState({ error: 'Invalid email' });
+            return false;
         }
-        if(
-            password === null || password === ''
-        ){
-            this.setState({error: 'Invalid password'})
-            return false
+        if (password === null || password === '') {
+            this.setState({ error: 'Invalid password' });
+            return false;
         }
-        
+
         auth.signInWithEmailAndPassword(email, password)
-        .then(user => {
-            this.props.navigation.navigate('tabnav')
-        })
-        .catch(err => {
-            if(err.code === 'auth/internal-error'){
-                this.setState({error: 'Incorrect password or invalid email'})
-            }
-        })
-
+            .then(user => {
+                this.props.navigation.navigate('tabnav');
+            })
+            .catch(err => {
+                if (err.code === 'auth/internal-error') {
+                    this.setState({ error: 'Incorrect password or invalid email' });
+                }
+            });
     }
 
-    redirectRegister(){
-        this.props.navigation.navigate('register')
+    redirectRegister() {
+        this.props.navigation.navigate('register');
     }
 
-    render(){
-        return(
+    render() {
+        const isButtonDisabled = this.state.email === '' || this.state.password === '';
+
+        return (
             <View style={styles.container}>
                 <Text style={styles.title}>Login</Text>
                 <TextInput
-                    onChangeText={(text) => this.setState({email: text, error: ''})}
+                    onChangeText={(text) => this.setState({ email: text, error: '' })}
                     value={this.state.email}
                     placeholder='Email'
                     keyboardType='default'
                     style={styles.input}
                 />
                 <TextInput
-                    onChangeText={(text) => this.setState({password: text, error: ''})}
+                    onChangeText={(text) => this.setState({ password: text, error: '' })}
                     value={this.state.password}
                     placeholder='Password'
                     keyboardType='default'
@@ -71,8 +67,9 @@ class Login extends Component {
                     style={styles.input}
                 />
                 <TouchableOpacity
-                    onPress={()=> this.onSubmit(this.state.email, this.state.password)}
-                    style={styles.button}
+                    onPress={() => this.onSubmit(this.state.email, this.state.password)}
+                    style={[styles.button, isButtonDisabled && styles.buttonDisabled]}
+                    disabled={isButtonDisabled}
                 >
                     <Text style={styles.buttonText}>Enter</Text>
                 </TouchableOpacity>
@@ -80,23 +77,16 @@ class Login extends Component {
                 <View style={styles.registerContainer}>
                     <Text style={styles.registerText}>
                         Do you not have an account yet?
-                        <TouchableOpacity
-                            onPress={()=> this.redirectRegister()}
-                        >
+                        <TouchableOpacity onPress={() => this.redirectRegister()}>
                             <Text style={styles.registerLink}> Click here</Text>
                         </TouchableOpacity>
                     </Text>
                 </View>
-                {
-                    this.state.error !== '' ?
-                    <Text style={styles.errorText}>
-                        {this.state.error}
-                    </Text>
-                    : 
-                    null
-                }
+                {this.state.error !== '' ? (
+                    <Text style={styles.errorText}>{this.state.error}</Text>
+                ) : null}
             </View>
-        )
+        );
     }
 }
 
@@ -127,6 +117,9 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         alignItems: 'center',
     },
+    buttonDisabled: {
+        backgroundColor: '#aaa',
+    },
     buttonText: {
         color: '#fff',
         fontSize: 16,
@@ -149,4 +142,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Login
+export default Login;
