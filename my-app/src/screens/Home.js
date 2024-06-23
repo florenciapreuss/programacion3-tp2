@@ -30,13 +30,8 @@ class Home extends Component {
 
     render() {
         return (
-<<<<<<< HEAD
-            <View>
-                <Text style={styles.title}>PicShot</Text>
-=======
             <View style={styles.container}>
                 <Text style={styles.title}>Feed</Text>
->>>>>>> 1d3721040cd9f0ac9d3133abd571e81c202f0f9b
                 <FlatList
                     style={styles.flatList}
                     data={this.state.posteos}
