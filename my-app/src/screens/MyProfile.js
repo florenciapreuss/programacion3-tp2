@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, Image } from 'react-native';
 import { auth, db } from '../firebase/config';
-import Posteo from '../components/Posteo/Posteo'
+import Posteo from '../components/Posteo/Posteo';
 
 class MyProfile extends Component {
     constructor() {
@@ -21,7 +21,7 @@ class MyProfile extends Component {
                         data: doc.data()
                     });
                 });
-                console.log('Posts:', postsDb)
+                console.log('Posts:', postsDb);
                 this.setState({
                     PostsUser: postsDb
                 });
@@ -38,14 +38,12 @@ class MyProfile extends Component {
             });
     }
 
-
     deleteThePost(idSpecificPost) {
         db.collection("posteos")
             .doc(idSpecificPost)
             .delete()
             .then((res) => console.log(res))
-            .catch(e => console.log(e))
-
+            .catch(e => console.log(e));
     }
 
     borrarUsuario(id) {
@@ -68,29 +66,64 @@ class MyProfile extends Component {
 
     render() {
         return (
-            <View >
-                <Image/>
+            <View style={styles.container}>
+                <Image style={styles.profileImage} source={{ uri: 'https://via.placeholder.com/150' }} />
                 {
                     this.state.PostsUser.length > 0 ?
                         <FlatList
                             data={this.state.PostsUser}
                             keyExtractor={(item) => item.id.toString()}
                             renderItem={({ item }) =>
-                         <View>  <Posteo borrarPosteo={(idPosteo) => this.deleteThePost(idPosteo)} post={item} /> </View>}
+                                <View style={styles.postContainer}>
+                                    <Posteo borrarPosteo={(idPosteo) => this.deleteThePost(idPosteo)} post={item} />
+                                </View>
+                            }
                         />
                         :
-                        <Text>This user does not have any posts</Text>
+                        <Text style={styles.noPostsText}>This user does not have any posts</Text>
                 }
-                <TouchableOpacity  onPress={() => this.logout()}>
-                    <Text>LogOut</Text>
+                <TouchableOpacity style={styles.button} onPress={() => this.logout()}>
+                    <Text style={styles.buttonText}>LogOut</Text>
                 </TouchableOpacity>
-                <TouchableOpacity /* style={} */ onPress={() => (this.borrarUsuario())(this.props.navigation.navigate("Home"))}>
-                    <Text /* style={} */>Delete this Profile</Text>
+                <TouchableOpacity style={styles.button} onPress={() => this.borrarUsuario(this.props.navigation.navigate("Home"))}>
+                    <Text style={styles.buttonText}>Delete this Profile</Text>
                 </TouchableOpacity>
             </View>
         );
     }
 }
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#f8f8f8',
+    },
+    postContainer: {
+        marginBottom: 10,
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        width: '100%',
+    },
+    noPostsText: {
+        fontSize: 16,
+        color: '#999',
+        textAlign: 'center',
+    },
+    button: {
+        backgroundColor: '#007bff',
+        paddingVertical: 10,
+        borderRadius: 5,
+        alignItems: 'center',
+        marginBottom: 10,
+        width: '100%',
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+    },
+});
 
 export default MyProfile;
