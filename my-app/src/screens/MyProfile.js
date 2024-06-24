@@ -109,7 +109,7 @@ class MyProfile extends Component {
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
                             <View style={styles.postContainer}>
-                                <Posteo borrarPosteo={(idPosteo) => this.deleteThePost(idPosteo)} post={item} />
+                                <Posteo navigation={this.props.navigation} borrarPosteo={(idPosteo) => this.deleteThePost(idPosteo)} post={item} />
                             </View>
                         )}
                     />
