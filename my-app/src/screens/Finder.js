@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, TouchableOpacity, StyleSheet, Picker, FlatList} from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, Picker, FlatList } from 'react-native';
 import { db, auth } from '../firebase/config';
 
 export default class Finder extends Component {
@@ -8,14 +8,15 @@ export default class Finder extends Component {
         this.state = {
             valorInput: '',
             usuariosMostrados: [],
-            campoFiltrado: 'name', 
+            campoFiltrado: 'name',
         };
     }
 
     componentDidMount() {
+        // Fetch users from Firestore and update state
         db.collection("users").onSnapshot((snap) => {
             let data = [];
-            snap.forEach((doc) => { 
+            snap.forEach((doc) => {
                 data.push({
                     id: doc.id,
                     data: doc.data()
@@ -27,6 +28,7 @@ export default class Finder extends Component {
         });
     }
 
+    // Function to navigate to user profile based on email
     usuarioElegido(owner) {
         if (owner === auth.currentUser.email) {
             this.props.navigation.navigate('my-profile');
@@ -35,15 +37,11 @@ export default class Finder extends Component {
         }
     }
 
-
-
-   
     render() {
-
+        // Filter users based on campoFiltrado and valorInput
         const usuariosEncontrados = this.state.usuariosMostrados.filter((usuario) =>
             usuario.data[this.state.campoFiltrado]?.toLowerCase().includes(this.state.valorInput.toLowerCase())
         );
-
 
         return (
             <View style={styles.container}>
@@ -52,17 +50,17 @@ export default class Finder extends Component {
                     onValueChange={(itemValue) => this.setState({ campoFiltrado: itemValue })}
                     style={styles.picker}
                 >
-                    <Picker.Item label="Nombre" value="name" />
-                    <Picker.Item label="Email" value="owner" />
+                    <Picker.Item label="Name" value="name" />
+                    <Picker.Item label="Email" value="email" />
                 </Picker>
                 <TextInput
                     style={styles.input}
-                    placeholder={`Busca por ${this.state.campoFiltrado}`}
+                    placeholder={`Search by ${this.state.campoFiltrado}`}
                     value={this.state.valorInput}
                     onChangeText={(text) => this.setState({ valorInput: text })}
                 />
                 {usuariosEncontrados.length === 0 ? (
-                    <Text>No hay usuarios que coincidan con tu búsqueda</Text>
+                    <Text style={styles.noResultsText}>No hay usuarios que coincidan con tu búsqueda</Text>
                 ) : (
                     <FlatList
                         data={usuariosEncontrados}
@@ -70,65 +68,64 @@ export default class Finder extends Component {
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 style={styles.userItem}
-                                onPress={() => this.usuarioElegido(item.data.owner)}
+                                onPress={() => this.usuarioElegido(item.data.email)}
                             >
-                                <View>
-                                    <Text style={styles.userName}>{item.data.name}</Text>
-                                </View>
+                                <Text style={styles.userName}>{item.data.name}</Text>
                             </TouchableOpacity>
                         )}
                     />
                 )}
             </View>
-            
         );
     }
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
-        backgroundColor: '#93CD93',
+        backgroundColor: '#f8f8f8',
+        padding: 10,
     },
-    img: {
-        height: 70,
-        width: 70,
-        marginBottom: 20,
+    picker: {
+        height: 40,
+        width: '100%',
+        marginBottom: 10,
+        backgroundColor: '#ffffff',
+        borderWidth: 1,
+        borderColor: '#dbdbdb',
+        borderRadius: 5,
     },
     input: {
         height: 40,
-        borderColor: '#ffffff',
-        borderWidth: 2,
+        backgroundColor: '#ffffff',
         paddingHorizontal: 10,
-        marginBottom: 20,
+        marginBottom: 10,
+        borderWidth: 1,
+        borderColor: '#dbdbdb',
         borderRadius: 5,
-        backgroundColor: '#92CD93',
-        color: '#ffffff',
-        fontWeight: 'bold',
-        shadowColor: '#000',
-        shadowOpacity: 0.2,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 2,
-        elevation: 5,
     },
-    picker: {
-        height: 50,
-        width: 150,
-        marginBottom: 20,
+    noResultsText: {
+        textAlign: 'center',
+        color: '#999999',
+        marginTop: 20,
     },
     userItem: {
-        padding: 15,
-        marginBottom: 10,
-        backgroundColor: '#92CD93',
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#ffffff',
         borderRadius: 5,
+        marginBottom: 10,
+        padding: 10,
         shadowColor: '#000',
         shadowOpacity: 0.1,
         shadowOffset: { width: 0, height: 1 },
         shadowRadius: 2,
-        elevation: 2,
+        elevation: 1,
     },
     userName: {
-        fontSize: 18,
+        marginLeft: 10,
+        fontWeight: 'bold',
+        fontSize: 16,
         color: '#333',
     },
 });
