@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Camera } from 'expo-camera';
+import { Camera } from 'expo-camera/legacy';
 import { storage, auth } from '../../firebase/config';
 
 export default class Camara extends Component {
@@ -24,7 +24,7 @@ export default class Camara extends Component {
     tomarFoto(){
         this.metodosCamara.takePictureAsync()
         .then((urlTemp)=> this.setState({urlTemporal: urlTemp.uri}) )
-        .catch(()=> console.log(err))
+        .catch((err)=> console.log(err))
     }
 
     descartarFoto(){
@@ -60,7 +60,7 @@ export default class Camara extends Component {
                     this.state.urlTemporal === '' ? 
                         <>
                         <Camera
-                            style={styles .camara}
+                            style={styles.camara}
                             ref={(metodos) => (this.metodosCamara = metodos)}
                             type={Camera.Constants.Type.back} // Set camera type to back
                         />
@@ -70,7 +70,8 @@ export default class Camara extends Component {
                             <Text>Tomar foto</Text>
                          </TouchableOpacity> 
                        </>
-                     : <>
+                     : 
+                     <>
 
                         <Image
                             style={styles.imagen}
@@ -81,7 +82,7 @@ export default class Camara extends Component {
                             <Text>Rechazar foto</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={()=>this.guardarFotoEnFirebase}>
+                        <TouchableOpacity onPress={()=>this.guardarFotoEnFirebase()}>
                             <Text>Aceptar foto</Text>
                         </TouchableOpacity>
                             
@@ -101,7 +102,9 @@ const styles = StyleSheet.create({
         flex: 1
     },
     camara: {
-       height: 400    
+       height: 400,
+      
+
     },
     imagen:{
         height: 400,

@@ -27,7 +27,7 @@ export default class Post extends Component {
                 .then(() => {
                     this.setState({
                         descripcion: '',
-                        imageUrl: ''
+                        imgPostUrl: ''
                     });
                     this.props.navigation.navigate('home');
                 })
@@ -54,13 +54,7 @@ export default class Post extends Component {
                 <TextInput
                     value={this.state.descripcion}
                     onChangeText={(text) => this.setState({ descripcion: text })}
-                    placeholder="Describe tu post"
-                    style={styles.input}
-                />
-                <TextInput
-                    value={this.state.imageUrl}
-                    onChangeText={(text) => this.setState({ imageUrl: text })}
-                    placeholder="Agrega el link a tu imagen"
+                    placeholder="Describe your post"
                     style={styles.input}
                 />
                 <TouchableOpacity onPress={() => this.onSubmit(this.state.descripcion, this.state.imageUrl)}>

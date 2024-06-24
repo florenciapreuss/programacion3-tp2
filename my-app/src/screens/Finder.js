@@ -6,14 +6,14 @@ export default class Finder extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            valorInput: '',
-            usuariosMostrados: [],
-            campoFiltrado: 'name',
+            InputValue: '',
+            Filtered: 'name',
+            Users: [],
+            
         };
     }
 
     componentDidMount() {
-        // Fetch users from Firestore and update state
         db.collection("users").onSnapshot((snap) => {
             let data = [];
             snap.forEach((doc) => {
@@ -23,52 +23,55 @@ export default class Finder extends Component {
                 });
             });
             this.setState({
-                usuariosMostrados: data
+                Users: data
             });
         });
     }
 
-    // Function to navigate to user profile based on email
-    usuarioElegido(owner) {
-        if (owner === auth.currentUser.email) {
+ 
+    selectedUser(value) {
+        if (value === auth.currentUser.email) {
             this.props.navigation.navigate('my-profile');
         } else {
-            this.props.navigation.navigate("friend-profile", { email: owner }); // Pasar el email a DetalleUsuario
+            this.props.navigation.navigate("friend-profile", { email: value }); 
         }
     }
 
     render() {
-        // Filter users based on campoFiltrado and valorInput
-        const usuariosEncontrados = this.state.usuariosMostrados.filter((usuario) =>
-            usuario.data[this.state.campoFiltrado]?.toLowerCase().includes(this.state.valorInput.toLowerCase())
+        
+        const UsersFiltered = this.state.Users.filter((usuario) =>
+            usuario.data[this.state.Filtered]?.toLowerCase().includes(this.state.InputValue.toLowerCase())
         );
 
         return (
             <View style={styles.container}>
                 <Picker
-                    selectedValue={this.state.campoFiltrado}
-                    onValueChange={(itemValue) => this.setState({ campoFiltrado: itemValue })}
+                    selectedValue={this.state.Filtered}
+                    onValueChange={(itemValue) => this.setState({ Filtered: itemValue })}
                     style={styles.picker}
                 >
-                    <Picker.Item label="Name" value="name" />
                     <Picker.Item label="Email" value="email" />
+
+                    <Picker.Item label="Name" value="name" />
+
+                    
                 </Picker>
                 <TextInput
                     style={styles.input}
-                    placeholder={`Search by ${this.state.campoFiltrado}`}
-                    value={this.state.valorInput}
-                    onChangeText={(text) => this.setState({ valorInput: text })}
+                    placeholder={`Search by ${this.state.Filtered}`}
+                    value={this.state.InputValue}
+                    onChangeText={(text) => this.setState({ InputValue: text })}
                 />
-                {usuariosEncontrados.length === 0 ? (
+                {UsersFiltered.length === 0 ? (
                     <Text style={styles.noResultsText}>No hay usuarios que coincidan con tu búsqueda</Text>
                 ) : (
                     <FlatList
-                        data={usuariosEncontrados}
+                        data={UsersFiltered}
                         keyExtractor={(user) => user.id}
                         renderItem={({ item }) => (
                             <TouchableOpacity
                                 style={styles.userItem}
-                                onPress={() => this.usuarioElegido(item.data.email)}
+                                onPress={() => this.selectedUser(item.data.email)}
                             >
                                 <Text style={styles.userName}>{item.data.name}</Text>
                             </TouchableOpacity>

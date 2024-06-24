@@ -1,15 +1,19 @@
 import { Text, View } from 'react-native'
 import React, { Component } from 'react'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import { FontAwesome } from '@expo/vector-icons'; //para ponerles alguna fotito
 
 import StackHome from './StackHome';
 import NewPost from '../screens/NewPost'
 import MyProfile from '../screens/MyProfile'
 import Finder from '../screens/Finder'
 
+import { FontAwesome6 } from '@expo/vector-icons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import { Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
 
 const Tab = createBottomTabNavigator()
@@ -21,7 +25,7 @@ export default class TabNav extends Component {
         <Tab.Screen
             options={{
                 headerShown:false,
-                tabBarIcon: ()=> <Entypo name="Home" size={24} color="#92CD93" /> 
+                tabBarIcon: ()=>  <Entypo name="home" size={24} /> 
        
 
             }} 
@@ -32,7 +36,7 @@ export default class TabNav extends Component {
         component={NewPost}
         options={{
           headerShown:false,
-          tabBarIcon: ()=> <Entypo name="New-Post" size={24} color="#92CD93" /> 
+          tabBarIcon: ()=> <AntDesign name="camerao" size={24}  />
         }}
         />
         <Tab.Screen 
@@ -40,7 +44,8 @@ export default class TabNav extends Component {
         component={MyProfile}
         options={{
           headerShown:false,
-          tabBarIcon: ()=> <Entypo name="MyProfile" size={24} color="#92CD93" /> 
+          tabBarIcon: ()=> <MaterialCommunityIcons name="human" size={24} />
+          
         }}
         />
         <Tab.Screen 
@@ -48,7 +53,7 @@ export default class TabNav extends Component {
         component={Finder}
         options={{
           headerShown:false,
-          tabBarIcon: ()=> <Entypo name="Finder" size={24} color="#92CD93" /> 
+          tabBarIcon: ()=> <FontAwesome name="search" size={24} />
         }}
         />
       </Tab.Navigator>
