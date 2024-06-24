@@ -48,6 +48,8 @@ class Posteo extends Component {
 
         return (
             <View style={styles.postContainer}>
+        {/*         <Image source={{uri: this.props.post.data.imgUrl}}
+                style= {styles.imgPost} /> */}
                 {/* Encabezado del Post */}
                 <View style={styles.header}>
                     {/* Avatar del propietario (podría ser una imagen circular) */}
@@ -142,6 +144,11 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 14,
     },
+   /*  imgPost: { 
+        height: 200,
+        width: '100%',
+    } */
+       
 });
 
 export default Posteo;

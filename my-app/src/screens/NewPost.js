@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { db, auth } from '../firebase/config';
+import Camara from '../components/Camara/Camara'
 
 export default class Post extends Component {
     constructor(props) {
         super(props);
         this.state = {
             descripcion: '',
-            imageUrl: ''
+            imageUrl: '',
+            imgPostUrl: ''
         };
     }
 
@@ -18,7 +20,7 @@ export default class Post extends Component {
                     descripcion: descripcion,
                     owner: auth.currentUser.email,
                     createdAt: Date.now(),
-                    imageUrl: imageUrl,
+                    imageUrl: this.state.imgPostUrl,
                     likes: [],
                     comments: []
                 })
@@ -33,10 +35,22 @@ export default class Post extends Component {
         }
     }
 
+    actualizarImgUrl(url){
+        this.setState({
+            imgPostUrl: url
+        })
+    }
+
     render() {
         return (
             <View style={styles.container}>
-                
+                {
+                    this.state.imgPostUrl === ''
+                    ?
+                    <Camara actualizarImgUrl= {(url)=> this.actualizarImgUrl(url)} />
+                    :
+                    <>
+                    
                 <TextInput
                     value={this.state.descripcion}
                     onChangeText={(text) => this.setState({ descripcion: text })}
@@ -52,6 +66,10 @@ export default class Post extends Component {
                 <TouchableOpacity onPress={() => this.onSubmit(this.state.descripcion, this.state.imageUrl)}>
                     <Text style={styles.button}>Create Post</Text>
                 </TouchableOpacity>
+                    </>
+                }
+
+
             </View>
         );
     }
