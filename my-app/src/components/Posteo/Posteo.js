@@ -49,32 +49,20 @@ class Posteo extends Component {
 
         return (
             <View style={styles.postContainer}>
-        {/*         <Image source={{uri: this.props.post.data.imgUrl}}
-                style= {styles.imgPost} /> */}
-                {/* Encabezado del Post */}
+
                 <View style={styles.header}>
-                    {/* Avatar del propietario (podría ser una imagen circular) */}
-                    <Image
-                        style={styles.avatar}
-                        source={{ uri: 'https://placekitten.com/200/200' }} // Ejemplo de imagen de avatar
-                    />
-                    {/* Nombre de usuario */}
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("friend-profile", { email: owner })}>
                         <Text style={styles.ownerName}>{owner}</Text>
                     </TouchableOpacity>
                 </View>
 
-                {/* Imagen del Post */}
                 <Image
                     style={styles.image}
                     source={{ uri: imageUrl }}
                 />
 
-                {/* Descripción del Post */}
                 <Text style={styles.description}>{descripcion}</Text>
 
-
-                {/* Boton de like:*/}
                 <View>
                     <Text>
                         {
@@ -94,9 +82,8 @@ class Posteo extends Component {
                     }
                 </View>
 
-                {/* Boton de comentario: */}
-                <View /* style={} */>
-                <Text /* style={} */> {this.props.post.data.comments.length} </Text>
+                <View>
+                <Text> {this.props.post.data.comments.length} </Text>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("comments", { id: this.props.post.id })}>
                     <FontAwesome name="comments" size={24} color="black" />
                     </TouchableOpacity>
@@ -125,19 +112,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
     },
-    avatar: {
-        width: 40,
-        height: 40,
-        borderRadius: 20, // Hacer la imagen circular
-        marginRight: 10,
-    },
     ownerName: {
         fontSize: 16,
         fontWeight: 'bold',
     },
     image: {
         width: '100%',
-        aspectRatio: 1, // Mantener la relación de aspecto de la imagen
+        aspectRatio: 1,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
     },
@@ -145,10 +126,6 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 14,
     },
-   /*  imgPost: { 
-        height: 200,
-        width: '100%',
-    } */
        
 });
 
