@@ -15,6 +15,7 @@ class MyProfile extends Component {
 
     componentDidMount() {
         db.collection("posteos").where("owner", "==", auth.currentUser.email)
+        .orderBy('createdAt', 'desc')
             .onSnapshot((docs) => {
                 let postsDb = [];
                 docs.forEach(doc => {

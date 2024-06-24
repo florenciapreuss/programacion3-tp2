@@ -61,7 +61,7 @@ class Login extends Component {
 
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>Login</Text>
+                <Text style={styles.title}>PICSHOT</Text>
                 <TextInput
                     onChangeText={(text) => this.setState({ email: text, error: '' })}
                     value={this.state.email}
