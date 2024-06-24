@@ -31,7 +31,7 @@ class Home extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.title}>PicShot</Text>
+                <Text style={styles.title}>Feed</Text>
                 <FlatList
                     style={styles.flatList}
                     data={this.state.posteos}

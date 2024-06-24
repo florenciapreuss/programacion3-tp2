@@ -8,6 +8,8 @@ class MyProfile extends Component {
         super();
         this.state = {
             PostsUser: [],
+            user: null,
+            data: {} // Initialize data in the state
         };
     }
 
@@ -26,6 +28,26 @@ class MyProfile extends Component {
                     PostsUser: postsDb
                 });
             });
+
+        db.collection('users').where('email', '==', auth.currentUser.email)
+            .onSnapshot(docs => {
+                let userInfo = null;
+                docs.forEach(doc => {
+                    userInfo = {
+                        id: doc.id,
+                        data: doc.data()
+                    };
+                });
+                this.setState({
+                    user: userInfo,
+                    data: userInfo ? userInfo.data : {} // Set data in the state
+                });
+                console.log(userInfo);
+            },
+                error => {
+                    console.error("Error fetching user data: ", error);
+                }
+            );
     }
 
     logout() {
@@ -46,13 +68,13 @@ class MyProfile extends Component {
             .catch(e => console.log(e));
     }
 
-    borrarUsuario(id) {
+    deleteProfile(id) {
         const SpecificUser = auth.currentUser;
         db.collection('users').doc(id).delete()
             .then(() => {
                 SpecificUser.delete()
                     .then(() => {
-                        console.log('Removed User');
+                        console.log('User Removed');
                         this.props.navigation.navigate("login");
                     })
                     .catch((error) => {
@@ -67,36 +89,84 @@ class MyProfile extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Image style={styles.profileImage} source={{ uri: 'https://via.placeholder.com/150' }} />
-                {
-                    this.state.PostsUser.length > 0 ?
-                        <FlatList
-                            data={this.state.PostsUser}
-                            keyExtractor={(item) => item.id.toString()}
-                            renderItem={({ item }) =>
-                                <View style={styles.postContainer}>
-                                    <Posteo borrarPosteo={(idPosteo) => this.deleteThePost(idPosteo)} post={item} />
-                                </View>
-                            }
-                        />
-                        :
-                        <Text style={styles.noPostsText}>This user does not have any posts</Text>
-                }
+                {this.state.user ? (
+                    <View style={styles.profileContainer}>
+                        <Image source={{ uri: this.state.user.data.profilePic }} style={styles.profileImage} />
+                        <View style={styles.profileDetails}>
+                            <Text style={styles.name}>{this.state.user.data.name}</Text>
+                            <Text style={styles.bio}>{this.state.user.data.bio}</Text>
+                            <Text style={styles.email}>{auth.currentUser.email}</Text>
+                            <Text style={styles.postsCount}>Posts: {this.state.PostsUser.length}</Text>
+                        </View>
+                    </View>
+                ) : (
+                    <Text style={styles.noPostsText}>Loading...</Text>
+                )}
+    
+                {this.state.PostsUser.length > 0 ? (
+                    <FlatList
+                        data={this.state.PostsUser}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) => (
+                            <View style={styles.postContainer}>
+                                <Posteo borrarPosteo={(idPosteo) => this.deleteThePost(idPosteo)} post={item} />
+                            </View>
+                        )}
+                    />
+                ) : (
+                    <Text style={styles.noPostsText}>This user does not have any posts</Text>
+                )}
+    
                 <TouchableOpacity style={styles.button} onPress={() => this.logout()}>
                     <Text style={styles.buttonText}>LogOut</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={() => this.borrarUsuario(this.props.navigation.navigate("Home"))}>
+                <TouchableOpacity style={styles.button} onPress={() => this.deleteProfile(this.state.user.id)}>
                     <Text style={styles.buttonText}>Delete this Profile</Text>
                 </TouchableOpacity>
             </View>
         );
     }
+    
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding: 20,
         backgroundColor: '#f8f8f8',
+    },
+    profileContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    profileImage: {
+        width: 100,
+        height: 100,
+        borderRadius: 50,
+        marginRight: 20,
+    },
+    profileDetails: {
+        flex: 1,
+    },
+    name: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+    bio: {
+        fontSize: 18,
+        color: '#666',
+        marginBottom: 10,
+    },
+    email: {
+        fontSize: 18,
+        color: '#666',
+    },
+    postsCount: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginTop: 10,
     },
     postContainer: {
         marginBottom: 10,
@@ -105,7 +175,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderColor: '#ccc',
         borderWidth: 1,
-        width: '100%',
     },
     noPostsText: {
         fontSize: 16,
@@ -125,5 +194,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 });
+
 
 export default MyProfile;
