@@ -63,7 +63,7 @@ export default class Finder extends Component {
                     onChangeText={(text) => this.setState({ InputValue: text })}
                 />
                 {UsersFiltered.length === 0 ? (
-                    <Text style={styles.noResultsText}>No hay usuarios que coincidan con tu búsqueda</Text>
+                    <Text style={styles.noResultsText}>There aren't any users that match your search</Text>
                 ) : (
                     <FlatList
                         data={UsersFiltered}
