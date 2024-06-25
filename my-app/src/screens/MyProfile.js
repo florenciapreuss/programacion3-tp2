@@ -9,7 +9,7 @@ class MyProfile extends Component {
         this.state = {
             PostsUser: [],
             user: null,
-            data: {} // Initialize data in the state
+            data: {}
         };
     }
 

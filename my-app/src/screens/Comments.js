@@ -77,13 +77,25 @@ class Comments extends Component {
             onChangeText={string => this.setState({ comentario: string })}
             value={comentario}
           />
-          <TouchableOpacity
-            style={[styles.button, !comentario ? styles.disabledButton : null]}
+
+          {
+            comentario!="" ?
+            <TouchableOpacity
+            style={[styles.button]}
             onPress={() => this.enviarComments(comentario)}
-            disabled={!comentario}  // Disable if comentario is empty
           >
             <Text style={styles.buttonText}>Send comment</Text>
           </TouchableOpacity>
+          :
+          <TouchableOpacity
+            style={[styles.button, styles.disabledButton ]}
+            onPress={() => this.enviarComments(comentario)}
+            disabled={comentario === ""}
+          >
+            <Text style={styles.buttonText}>Send comment</Text>
+          </TouchableOpacity>
+
+          }
           <TouchableOpacity style={styles.button} onPress={() => this.volverAlHome()}>
             <Text style={styles.buttonText}>Go back to home page</Text>
           </TouchableOpacity>
@@ -146,7 +158,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   disabledButton: {
-    backgroundColor: '#ccc', // Change background color for disabled state
+    backgroundColor: '#ccc',
   },
 });
 
