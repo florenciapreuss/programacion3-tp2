@@ -49,19 +49,20 @@ class Comments extends Component {
   }
 
   render() {
+    const { comentario, arrayDeComments } = this.state;
+    
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Comments</Text>
         {
-          this.state.arrayDeComments.length === 0 ? (
+          arrayDeComments.length === 0 ? (
             <Text style={styles.noComments}>No comments yet</Text>
           ) : (
             <FlatList
-              data={this.state.arrayDeComments}
+              data={arrayDeComments}
               keyExtractor={item => item.createdAt.toString()}
               renderItem={({ item }) => (
                 <View style={styles.commentContainer}>
-                  {console.log('item', item)}
                   <Text style={styles.commentText}>{item.email} : {item.comment}</Text>
                 </View>
               )}
@@ -74,9 +75,13 @@ class Comments extends Component {
             style={styles.input}
             keyboardType='default'
             onChangeText={string => this.setState({ comentario: string })}
-            value={this.state.comentario}
+            value={comentario}
           />
-          <TouchableOpacity style={styles.button} onPress={() => this.enviarComments(this.state.comentario)}>
+          <TouchableOpacity
+            style={[styles.button, !comentario ? styles.disabledButton : null]}
+            onPress={() => this.enviarComments(comentario)}
+            disabled={!comentario}  // Disable if comentario is empty
+          >
             <Text style={styles.buttonText}>Send comment</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={() => this.volverAlHome()}>
@@ -86,6 +91,7 @@ class Comments extends Component {
       </View>
     );
   }
+  
 }
 
 const styles = StyleSheet.create({
@@ -138,6 +144,9 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  disabledButton: {
+    backgroundColor: '#ccc', // Change background color for disabled state
   },
 });
 

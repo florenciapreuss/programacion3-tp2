@@ -35,7 +35,11 @@ class FriendProfile extends Component {
             }
         );
 
-        db.collection('posteos').where('owner', '==', email).onSnapshot(
+        db.collection('posteos').where('owner', '==', email)
+
+        .orderBy('createdAt', 'desc')
+        
+        .onSnapshot(
             docs => {
                 let posts = [];
                 docs.forEach(doc => {

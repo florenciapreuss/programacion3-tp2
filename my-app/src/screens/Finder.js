@@ -52,7 +52,7 @@ export default class Finder extends Component {
                 >
                     <Picker.Item label="Email" value="email" />
 
-                    <Picker.Item label="Name" value="name" />
+                    <Picker.Item label="UserName" value="name" />
 
                     
                 </Picker>

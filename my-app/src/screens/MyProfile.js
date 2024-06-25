@@ -15,7 +15,7 @@ class MyProfile extends Component {
 
     componentDidMount() {
         db.collection("posteos").where("owner", "==", auth.currentUser.email)
-        .orderBy('createdAt', 'desc')
+        
             .onSnapshot((docs) => {
                 let postsDb = [];
                 docs.forEach(doc => {
@@ -105,15 +105,20 @@ class MyProfile extends Component {
                 )}
     
                 {this.state.PostsUser.length > 0 ? (
-                    <FlatList
-                        data={this.state.PostsUser}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => (
-                            <View style={styles.postContainer}>
-                                <Posteo navigation={this.props.navigation} borrarPosteo={(idPosteo) => this.deleteThePost(idPosteo)} post={item} />
-                            </View>
-                        )}
-                    />
+                   <FlatList
+                   data={this.state.PostsUser}
+                   keyExtractor={(item) => item.id.toString()}
+                   renderItem={({ item }) => (
+                       <View style={styles.postContainer}>
+                           <Posteo navigation={this.props.navigation} borrarPosteo={(idPosteo) => this.deleteThePost(idPosteo)} post={item} />
+                           <TouchableOpacity onPress={() => this.deleteThePost(item.id)} style={styles.deleteButton}>
+                               <Text style={styles.deleteButtonText}>Delete this post</Text>
+                           </TouchableOpacity>
+                       </View>
+                   )}
+               />
+               
+               
                 ) : (
                     <Text style={styles.noPostsText}>This user does not have any posts</Text>
                 )}
@@ -193,6 +198,19 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#fff',
         fontSize: 16,
+    },
+    deleteButton: {
+        backgroundColor: '#f44336',
+        paddingVertical: 8,
+        paddingHorizontal: 15,
+        borderRadius: 3,
+        marginTop: 10,
+        alignItems: 'center',
+    },
+    deleteButtonText: {
+        color: '#fff',
+        fontSize: 14,
+        fontWeight: 'bold',
     },
 });
 

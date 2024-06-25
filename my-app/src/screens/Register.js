@@ -68,6 +68,9 @@ class Register extends Component {
     }
 
     render(){
+
+        const isButtonDisabled = this.state.email === '' || this.state.password === '';
+
         return(
             <View style={styles.container}>
                 <Text style={styles.title}>Register</Text>
@@ -109,7 +112,8 @@ class Register extends Component {
                 />
                 <TouchableOpacity
                     onPress={()=> this.onSubmit(this.state.name, this.state.email, this.state.password)}
-                    style={styles.button}
+                    style={[styles.button, isButtonDisabled && styles.buttonDisabled]}
+                    disabled={isButtonDisabled}
                 >
                     <Text style={styles.buttonText}>Register</Text>
                 </TouchableOpacity>
@@ -162,6 +166,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderRadius: 5,
         alignItems: 'center',
+    },
+    buttonDisabled: {
+        backgroundColor: '#aaa',
     },
     buttonText: {
         color: '#fff',
